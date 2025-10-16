@@ -63,7 +63,7 @@ module.exports = {
             { id: roleId, allow: [discord.PermissionFlagsBits.ViewChannel] },
             { id: interaction.user.id, allow: [discord.PermissionFlagsBits.ViewChannel] }
           ],
-          parent: defaults.categoryParent,
+          parent: defaults.category2Parent,
         });
 
         permanentChannels.set(roleId, ch.id);
