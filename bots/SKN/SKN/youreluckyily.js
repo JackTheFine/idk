@@ -11,27 +11,32 @@ module.exports = {
     .setDescription('Start randomized speed dating rounds')
     .addIntegerOption(option =>
       option.setName('time')
-        .setDescription('Round Time in mins')
+        .setDescription('round time in mins')
         .setRequired(true))
     .addStringOption(option =>
       option.setName('roles')
-        .setDescription('Enter the roles you want to select (comma-separated IDs)')
+        .setDescription('enter the roles you want to select (comma-separated IDs)')
         .setRequired(true))
     .addIntegerOption(option =>
       option.setName('rounds')
-        .setDescription('How many rounds to run')
+        .setDescription('how many rounds to run')
         .setRequired(true)),
 
   async execute(interaction, client) {
     await interaction.deferReply({ ephemeral: true });
 
-    const roles = interaction.options.getString('roles').split(",");
+    const roles = interaction.options
+      .getString('roles')
+      .split(',')
+      .map(r => r.trim())
+      .filter(r => interaction.guild.roles.cache.has(r));
+
     const timeMinutes = interaction.options.getInteger('time');
     const rounds = interaction.options.getInteger('rounds');
     const timer = (timeMinutes * 60000) - 60000;
 
     if (roles.length % 2 !== 0) {
-      return interaction.editReply("You must provide an even number of roles.");
+      return interaction.editReply('you must provide an even number of roles.');
     }
 
     const usedPairs = new Set();
@@ -72,12 +77,12 @@ module.exports = {
 
     async function startTimer(channelid, r1, r2) {
       setTimeout(async () => {
-        client.channels.cache.get(channelid)?.send("1 minute remaining");
+        client.channels.cache.get(channelid)?.send('1 minute remaining');
 
         setTimeout(async () => {
           const ch = client.channels.cache.get(channelid);
           if (!ch) return;
-          ch.send("completed, closing");
+          ch.send('completed, closing');
           await closeChannel(channelid, r1, r2);
         }, 60000);
       }, timer);
@@ -89,7 +94,7 @@ module.exports = {
 
       const file = await createTranscript(ch, {
         returnBuffer: false,
-        filename: `${ch.name}-SpeedDate.html`
+        filename: `${ch.name}-SpeedDate.html`,
       });
 
       const permCh1 = client.channels.cache.get(permanentChannels.get(r1));
@@ -106,30 +111,30 @@ module.exports = {
       }
 
       const exampleEmbed = new EmbedBuilder()
-        .setColor(0x0099FF)
-        .setTitle('SpeedDate Ended')
-        .setAuthor({ name: 'SDB' })
-        .setDescription('SpeedDate Ended, use the buttons below to view/download transcript.')
-        .setFooter({ text: 'SDB' });
+        .setColor(0x0099ff)
+        .setTitle('speeddate ended')
+        .setAuthor({ name: 'sdb' })
+        .setDescription('speeddate ended, use the buttons below to view/download transcript.')
+        .setFooter({ text: 'sdb' });
 
       const msgButtons1 = new ActionRowBuilder().addComponents(
         new ButtonBuilder()
-          .setLabel('View Transcript')
+          .setLabel('view transcript')
           .setURL(`http://htmlpreview.github.io/?${transcriptUrl1}`)
           .setStyle(ButtonStyle.Link),
         new ButtonBuilder()
-          .setLabel('Download Transcript')
+          .setLabel('download transcript')
           .setURL(transcriptUrl1)
           .setStyle(ButtonStyle.Link)
       );
 
       const msgButtons2 = new ActionRowBuilder().addComponents(
         new ButtonBuilder()
-          .setLabel('View Transcript')
+          .setLabel('view transcript')
           .setURL(`http://htmlpreview.github.io/?${transcriptUrl2}`)
           .setStyle(ButtonStyle.Link),
         new ButtonBuilder()
-          .setLabel('Download Transcript')
+          .setLabel('download transcript')
           .setURL(transcriptUrl2)
           .setStyle(ButtonStyle.Link)
       );
@@ -148,23 +153,23 @@ module.exports = {
       for (let i = 0; i < shuffled.length; i += 2) {
         const r1 = shuffled[i];
         const r2 = shuffled[i + 1];
-        const key = [r1, r2].sort().join("-");
+        const role1 = interaction.guild.roles.cache.get(r1);
+        const role2 = interaction.guild.roles.cache.get(r2);
+        if (!role1 || !role2) continue;
 
-        if (usedPairs.has(key)) {
-          let attempts = 0;
-          do {
-            shuffled = shuffle([...roles]);
-            attempts++;
-          } while (usedPairs.has([shuffled[i], shuffled[i + 1]].sort().join("-")) && attempts < 10);
-        }
-
+        const key = [r1, r2].sort().join('-');
+        if (usedPairs.has(key)) continue;
         usedPairs.add(key);
         pairs.push([r1, r2]);
       }
 
       for (const [r1, r2] of pairs) {
+        const role1 = interaction.guild.roles.cache.get(r1);
+        const role2 = interaction.guild.roles.cache.get(r2);
+        if (!role1 || !role2) continue;
+
         await interaction.guild.channels.create({
-          name: `${interaction.guild.roles.cache.get(r1).name}-X-${interaction.guild.roles.cache.get(r2).name}`,
+          name: `${role1.name}-x-${role2.name}`,
           type: discord.ChannelType.GuildText,
           permissionOverwrites: [
             { id: interaction.guild.roles.everyone, deny: [discord.PermissionFlagsBits.ViewChannel] },
@@ -173,8 +178,8 @@ module.exports = {
             { id: r2, allow: [discord.PermissionFlagsBits.ViewChannel] },
           ],
           parent: defaults.categoryParent,
-        }).then(async channel => {
-          channel.send(`${timeMinutes} Minutes, starting now! (Round ${roundIndex + 1})`);
+        }).then(async (channel) => {
+          channel.send(`${timeMinutes} minutes, starting now! (round ${roundIndex + 1})`);
           startTimer(channel.id, r1, r2);
         });
       }
@@ -184,13 +189,13 @@ module.exports = {
 
     for (let i = 0; i < rounds; i++) {
       await runRound(i);
-      await new Promise(resolve => setTimeout(resolve, timeMinutes * 60000));
+      await new Promise((resolve) => setTimeout(resolve, timeMinutes * 60000));
     }
 
     const deleteRow = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setCustomId('delete_channel')
-        .setLabel('Delete Channel')
+        .setLabel('delete channel')
         .setStyle(ButtonStyle.Danger)
     );
 
@@ -198,12 +203,12 @@ module.exports = {
       const ch = client.channels.cache.get(chId);
       if (ch) {
         await ch.send({
-          content: "All rounds are done! Admins can delete this permanent channel when finished:",
-          components: [deleteRow]
+          content: 'all rounds are done! admins can delete this permanent channel when finished:',
+          components: [deleteRow],
         });
       }
     }
 
-    await interaction.editReply("All rounds finished! Cleanup messages sent to permanent channels.");
-  }
+    await interaction.editReply('all rounds finished! cleanup messages sent to permanent channels.');
+  },
 };
