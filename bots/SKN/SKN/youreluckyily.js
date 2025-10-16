@@ -23,7 +23,7 @@ module.exports = {
         .setRequired(true)),
 
   async execute(interaction, client) {
-    await interaction.deferReply({});
+    await interaction.deferReply();
 
     const roles = interaction.options.getString('roles').split(",");
     const timeMinutes = interaction.options.getInteger('time');
@@ -84,7 +84,6 @@ module.exports = {
     }
 
     async function closeChannel(channelid, r1, r2) {
-      try {
       const ch = client.channels.cache.get(channelid);
       if (!ch) return;
 
@@ -140,7 +139,6 @@ module.exports = {
         await permCh2.send({ embeds: [exampleEmbed], components: [msgButtons2] });
 
       await ch.delete().catch(() => {});
-        } catch(err) {console.log(err)}
     }
 
     async function runRound(roundIndex) {
