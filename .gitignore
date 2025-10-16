@@ -2,10 +2,6 @@
 .DS_Store
 /node_modules/*
 config.json
-replit.nix
 package-lock.json
-package.json
 
-/bots/swings/swings/db.json
-package.json
 package-lock.json
