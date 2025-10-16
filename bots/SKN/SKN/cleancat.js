@@ -7,7 +7,7 @@ module.exports = {
     .addStringOption(option =>
       option
         .setName('categoryid')
-        .setDescription('yes')
+        .setDescription('The ID of the category to clean')
         .setRequired(true)
     ),
 
@@ -20,11 +20,14 @@ module.exports = {
     if (!category || category.type !== ChannelType.GuildCategory) {
       return interaction.editReply('no');
     }
+    if (interaction.channel.parentId === categoryId) {
+      return interaction.editReply("don't do it in the category you're trying to delete!");
+    }
 
     const channels = interaction.guild.channels.cache.filter(c => c.parentId === categoryId);
 
     if (channels.size === 0) {
-      return interaction.editReply(`no cahnnels **${category.name}**.`);
+      return interaction.editReply(`no channels in **${category.name}**.`);
     }
 
     let deleted = 0;
@@ -37,6 +40,6 @@ module.exports = {
       }
     }
 
-    await interaction.editReply(`del **${deleted}** channels in **${category.name}**.`);
+    await interaction.editReply(`deleted **${deleted}** channels in **${category.name}**.`);
   },
 };

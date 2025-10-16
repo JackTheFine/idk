@@ -33,7 +33,7 @@ module.exports = {
     if (roles.length % 2 != 0) {
       return interaction.editReply("You must provide an even number of roles.");
     }
-
+    await interaction.editReply({ content: "beginning, this will update when" });
     const usedPairs = new Set();
     const permanentChannels = new Map();
 
