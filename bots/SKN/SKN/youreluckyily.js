@@ -84,6 +84,7 @@ module.exports = {
     }
 
     async function closeChannel(channelid, r1, r2) {
+      try {
       const ch = client.channels.cache.get(channelid);
       if (!ch) return;
 
@@ -139,6 +140,7 @@ module.exports = {
         await permCh2.send({ embeds: [exampleEmbed], components: [msgButtons2] });
 
       await ch.delete().catch(() => {});
+        } catch(err) {console.log(err)}
     }
 
     async function runRound(roundIndex) {
