@@ -30,7 +30,7 @@ module.exports = {
     const rounds = interaction.options.getInteger('rounds');
     const timer = (timeMinutes * 60000) - 60000;
 
-    if (roles.length % 2 !== 0) {
+    if (roles.length % 2 != 0) {
       return interaction.editReply("You must provide an even number of roles.");
     }
 
