@@ -23,7 +23,7 @@ module.exports = {
         .setRequired(true)),
 
   async execute(interaction, client) {
-    await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply({ ephemeral: false });
 
     const roles = interaction.options.getString('roles').split(",");
     const timeMinutes = interaction.options.getInteger('time');
