@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, ChannelType } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -15,33 +15,28 @@ module.exports = {
     const categoryId = interaction.options.getString('categoryid');
     const category = interaction.guild.channels.cache.get(categoryId);
 
-    if (!category || category.type !== 4) {
-      return interaction.reply({
-        content: 'no',
-        ephemeral: true
-      });
+    await interaction.deferReply({ ephemeral: true });
+
+    if (!category || category.type !== ChannelType.GuildCategory) {
+      return interaction.editReply('no');
     }
 
     const channels = interaction.guild.channels.cache.filter(c => c.parentId === categoryId);
 
     if (channels.size === 0) {
-      return interaction.reply({
-        content: `no cahnnels **${category.name}**.`,
-        ephemeral: true
-      });
+      return interaction.editReply(`no cahnnels **${category.name}**.`);
     }
 
+    let deleted = 0;
     for (const [id, channel] of channels) {
       try {
         await channel.delete(`responsible: ${interaction.user.tag}`);
+        deleted++;
       } catch (err) {
         console.error(`error deleting ${channel.name}:`, err);
       }
     }
 
-    await interaction.reply({
-      content: `del **${channels.size}** channels in **${category.name}**.`,
-      ephemeral: false
-    });
+    await interaction.editReply(`del **${deleted}** channels in **${category.name}**.`);
   },
 };
