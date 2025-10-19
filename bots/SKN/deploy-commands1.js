@@ -14,8 +14,8 @@ for (const file of commandFiles) {
 
 const rest1 = new REST({ version: '10' }).setToken(token);
 try {
-  rest1.put(Routes.applicationCommands(clientId), { body: []})
-  rest1.put(Routes.applicationGuildCommands(clientId, guildId), { body: [] })
+  //rest1.put(Routes.applicationCommands(clientId), { body: []})
+  rest1.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
   console.log('Successfully registered SKN application commands.');
 } catch (error) {
   console.error(error);
