@@ -38,7 +38,7 @@ async function runSpeedDating(interaction, client) {
   const timer = (timeMinutes * 60000) - 60000;
 
   if (roles.length % 2 !== 0) {
-    return interaction.followUp("you must provide an even number of roles.");
+    return interaction.editReply("you must provide an even number of roles.");
   }
 
   const usedPairs = new Set();
@@ -221,5 +221,5 @@ async function runSpeedDating(interaction, client) {
     }
   }
 
-  await interaction.followUp("all rounds finished! cleanup messages sent to permanent channels.");
+  await interaction.editReply("all rounds finished! cleanup messages sent to permanent channels.");
 }
