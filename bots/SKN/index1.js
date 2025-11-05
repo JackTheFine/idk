@@ -82,7 +82,7 @@ client.on(Events.MessageCreate, async message => {
     console.log(`User ${message.author.tag} is on cooldown.`);
 
     try {
-      await message.author.send("⚠️ You’re being rate limited for spamming the bot. Please wait **1 minute** before triggering me again.");
+      await message.author.send("rate limit, ur cooked");
     } catch (err) {
       console.log(`Couldn't DM ${message.author.tag}`);
     }
