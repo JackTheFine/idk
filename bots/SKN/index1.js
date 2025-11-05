@@ -77,11 +77,6 @@ client.on(Events.MessageCreate, async message => {
     cooldownUsers.add(userId);
     console.log(`User ${message.author.tag} is on cooldown.`);
 
-    try {
-      await message.author.send("rate limit, ur cooked");
-    } catch (err) {
-      console.log(`Couldn't DM ${message.author.tag}`);
-    }
 
     setTimeout(() => cooldownUsers.delete(userId), 60_000);
     return;
