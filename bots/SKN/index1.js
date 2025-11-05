@@ -52,12 +52,16 @@ const wordReplies = {
   "idk": "bro talk"
 };
 
-// --- Rate limit system ---
 const userMessageTimestamps = new Map();
 const cooldownUsers = new Set();
 
 client.on(Events.MessageCreate, async message => {
   if (message.author.bot) return;
+
+  const msg = message.content.toLowerCase();
+  const found = Object.keys(wordReplies).find(word => msg.includes(word));
+
+  if (!found) return;
 
   const userId = message.author.id;
   const now = Date.now();
@@ -77,16 +81,18 @@ client.on(Events.MessageCreate, async message => {
     cooldownUsers.add(userId);
     console.log(`User ${message.author.tag} is on cooldown.`);
 
+    try {
+      await message.author.send("⚠️ You’re being rate limited for spamming the bot. Please wait **1 minute** before triggering me again.");
+    } catch (err) {
+      console.log(`Couldn't DM ${message.author.tag}`);
+    }
 
     setTimeout(() => cooldownUsers.delete(userId), 60_000);
     return;
   }
 
-  const msg = message.content.toLowerCase();
-  const found = Object.keys(wordReplies).find(word => msg.includes(word));
-  if (found) {
-    await message.reply(wordReplies[found]);
-  }
+  await message.reply(wordReplies[found]);
 });
+
 
 client.login(token1);
