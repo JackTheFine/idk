@@ -36,18 +36,19 @@ client.on(Events.InteractionCreate, async interaction => {
   }
 });
 
-const wordBank = [
-  "can i have spots",
-  "im not toy",
-  "plsss"
-];
+const wordReplies = {
+  "can i have spots": "toy",
+  "im not toy": "toy",
+  "plsss": "toy",
+  "u are toy": "no YOU"
+};
 
 client.on(Events.MessageCreate, async message => {
   if (message.author.bot) return;
   const msg = message.content.toLowerCase();
-  const found = wordBank.find(word => msg.includes(word));
+  const found = Object.keys(wordReplies).find(word => msg.includes(word));
   if (found) {
-    await message.reply(`toy`);
+    await message.reply(wordReplies[found]);
   }
 });
 
