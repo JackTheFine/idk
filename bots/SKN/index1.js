@@ -1,7 +1,7 @@
 const { Client, Events, GatewayIntentBits, Collection, ActivityType } = require('discord.js');
 const fs = require('node:fs');
 const { token1 } = require('../../config.json');
-require("./deploy-commands");
+require("./deploy-commands1");
 
 const client = new Client({ 
   intents: [ GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMembers ] 
