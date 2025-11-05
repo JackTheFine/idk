@@ -8,10 +8,10 @@ const client = new Client({
 });
 
 client.commands = new Collection();
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync('./bots/SKN/commands').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
-  const command = require(`../../commands/${file}`);
+  const command = require(`./commands/${file}`);
   client.commands.set(command.data.name, command);
 }
 
@@ -44,7 +44,8 @@ const wordReplies = {
   "cnat": "https://media.discordapp.net/stickers/1432864162182074449.webp?size=320&quality=lossless",
   "<@1247062292181291011>": "twin he doesnt care",
   "<@1434999293248405624>": "stop bothering them twin",
-  "<@1399897074232983662>": "they have better things to do twin"
+  "<@1399897074232983662>": "they have better things to do twin",
+  "lag is toy": "ik twin :mending_heart::rose::battery:"
 };
 
 client.on(Events.MessageCreate, async message => {

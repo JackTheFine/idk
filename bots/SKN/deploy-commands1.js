@@ -4,10 +4,10 @@ const { REST, Routes } = require('discord.js');
 const { token1, clientId1, guildId1 } = require('../../config.json');
 const commands = [];
 
-const commandFiles = fs.readdirSync('./bots/SKN/SKN').filter(file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync('./bots/SKN/commands').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
-  const command = require(`./SKN/${file}`);
+  const command = require(`./commands/${file}`);
   commands.push(command.data.toJSON());
 
 }
