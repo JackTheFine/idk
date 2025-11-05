@@ -45,7 +45,13 @@ const wordReplies = {
   "<@1247062292181291011>": "twin he doesnt care",
   "<@1434999293248405624>": "stop bothering them twin",
   "<@1399897074232983662>": "they have better things to do twin",
-  "lag is toy": "ik twin :mending_heart::rose::battery:"
+  "lag is toy": "ik twin :mending_heart::rose::battery:",
+  ":3": "https://cdn.discordapp.com/attachments/1241569943665905816/1429162805990391988/silly.gif?ex=690b8c95&is=690a3b15&hm=fd8b3353f15b4e74961f1eb6123057345216723a290776dddc52070bf5da2232&",
+  "i hate the a": "TWIN U BETTER BE JOKING",
+  "ok": "ok",
+  "<@1435429126168252486>": "what do you want niga",
+  "nigger": "oh?",
+  "fuck the a": "TWIN U BETTER BE JOKING"
 };
 
 client.on(Events.MessageCreate, async message => {
