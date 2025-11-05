@@ -49,7 +49,8 @@ const wordReplies = {
   "<@1435429126168252486>": "what do you want niga",
   "nigger": "oh?",
   "fuck the a": "TWIN U BETTER BE JOKING",
-  "idk": "bro talk"
+  "idk": "bro talk",
+  "ok": "ok"
 };
 
 const userMessageTimestamps = new Map();
