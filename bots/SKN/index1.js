@@ -51,7 +51,8 @@ const wordReplies = {
   "ok": "ok",
   "<@1435429126168252486>": "what do you want niga",
   "nigger": "oh?",
-  "fuck the a": "TWIN U BETTER BE JOKING"
+  "fuck the a": "TWIN U BETTER BE JOKING",
+  "idk": "bro talk"
 };
 
 client.on(Events.MessageCreate, async message => {
