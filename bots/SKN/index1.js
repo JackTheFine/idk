@@ -50,7 +50,7 @@ const wordReplies = {
   "nigger": "oh?",
   "fuck the a": "TWIN U BETTER BE JOKING",
   "idk": "bro talk",
-  "ok": "ok"
+  //"ok": "ok"
 };
 
 const userMessageTimestamps = new Map();
