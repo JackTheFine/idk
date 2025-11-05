@@ -42,7 +42,9 @@ const wordReplies = {
   "plsss": "toy",
   "u are toy": "no YOU",
   "cnat": "https://media.discordapp.net/stickers/1432864162182074449.webp?size=320&quality=lossless",
-  "<@1247062292181291011>": "twin he doesnt care"
+  "<@1247062292181291011>": "twin he doesnt care",
+  "<@1434999293248405624>": "stop bothering them twin",
+  "<@1399897074232983662>": "they have better things to do twin"
 };
 
 client.on(Events.MessageCreate, async message => {
