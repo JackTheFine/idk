@@ -3,9 +3,7 @@ const fs = require('node:fs');
 const { token1 } = require('../../config.json');
 require("./deploy-commands1");
 
-const client = new Client({ 
-  intents: [ GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMembers ] 
-});
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMembers ]});
 
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./bots/SKN/commands').filter(file => file.endsWith('.js'));
@@ -54,8 +52,41 @@ const wordReplies = {
   "idk": "bro talk"
 };
 
+// --- Rate limit system ---
+const userMessageTimestamps = new Map();
+const cooldownUsers = new Set();
+
 client.on(Events.MessageCreate, async message => {
   if (message.author.bot) return;
+
+  const userId = message.author.id;
+  const now = Date.now();
+
+  if (cooldownUsers.has(userId)) return;
+
+  if (!userMessageTimestamps.has(userId)) {
+    userMessageTimestamps.set(userId, []);
+  }
+
+  const timestamps = userMessageTimestamps.get(userId);
+  timestamps.push(now);
+  const recent = timestamps.filter(ts => now - ts < 10_000);
+  userMessageTimestamps.set(userId, recent);
+
+  if (recent.length >= 3) {
+    cooldownUsers.add(userId);
+    console.log(`User ${message.author.tag} is on cooldown.`);
+
+    try {
+      await message.author.send("rate limit, ur cooked");
+    } catch (err) {
+      console.log(`Couldn't DM ${message.author.tag}`);
+    }
+
+    setTimeout(() => cooldownUsers.delete(userId), 60_000);
+    return;
+  }
+
   const msg = message.content.toLowerCase();
   const found = Object.keys(wordReplies).find(word => msg.includes(word));
   if (found) {
