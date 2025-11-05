@@ -1,7 +1,7 @@
 
 const fs = require("fs");
 const { REST, Routes } = require('discord.js');
-const { token1, clientId1, guildId1 } = require('../../config.json');
+const { token, clientId, guildId } = require('../../config.json');
 const commands = [];
 
 const commandFiles = fs.readdirSync('./bots/SKN/SKN').filter(file => file.endsWith('.js'));
@@ -12,10 +12,10 @@ for (const file of commandFiles) {
 
 }
 
-const rest1 = new REST({ version: '10' }).setToken(token1);
+const rest1 = new REST({ version: '10' }).setToken(token);
 try {
-  rest1.put(Routes.applicationCommands(clientId1), { body: commands })
-  //rest1.put(Routes.applicationGuildCommands(clientId1, guildId1), { body: commands })
+  //rest1.put(Routes.applicationCommands(clientId), { body: []})
+  rest1.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
   console.log('Successfully registered SKN application commands.');
 } catch (error) {
   console.error(error);
