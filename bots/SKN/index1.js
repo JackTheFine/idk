@@ -18,7 +18,7 @@ for (const file of commandFiles) {
 client.once(Events.ClientReady, c => {
   console.log(`Ready! (logged into ${c.user.tag})`);
   client.user.setPresence({
-    activities: [{ name: `evilmusic.mp3`, type: ActivityType.Listening }],
+    activities: [{ name: `for cops`, type: ActivityType.Watching }],
     status: 'idle',
   });
 });
