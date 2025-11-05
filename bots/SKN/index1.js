@@ -40,7 +40,8 @@ const wordReplies = {
   "can i have spots": "toy",
   "im not toy": "toy",
   "plsss": "toy",
-  "u are toy": "no YOU"
+  "u are toy": "no YOU",
+  "cnat": "https://media.discordapp.net/stickers/1432864162182074449.webp?size=320&quality=lossless"
 };
 
 client.on(Events.MessageCreate, async message => {
