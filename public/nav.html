@@ -1,0 +1,53 @@
+<div id="navbar" class="mb-4"><nav class="navbar navbar-expand-md" style="background-color: slategray;">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+            <img src="assets/img/d12f8639234ec709bb62060625bb2254.jpeg" style="border-radius: .5rem;" height="40px" width="40px">
+            &nbsp;&nbsp;
+            <span style="display: inline-block; width: 125px;">
+                <span id="jackthetext" style="font-size: large"></span><span id="jacktheext" style="font-size: large"></span>
+            </span>
+        </a>
+        <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1">
+            <span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navcol-1" style="background-color: slategray;">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a id="links" class="nav-link" href="/links">links</a></li>
+                <li class="nav-item"><a id="contact" class="nav-link" href="/contact">contact</a></li>
+                <li class="nav-item"><a id="wit" class="nav-link" href="/wit">what is this?</a></li>
+                <li class="nav-item"><a id="about" class="nav-link" href="/about">about</a></li>
+                <li class="nav-item"><a class="nav-link" href="https://discord.com/oauth2/authorize?client_id=1060611962490323034&amp;permissions=8&amp;scope=bot">discord bot</a></li>
+                <li class="nav-item"><a id="about" class="nav-link" href="/404ﾠ" style="color:transparent">404?</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<script>
+    async function changeText(text, element) {
+    return new Promise(resolve => {
+        let originalText = currentText = element.html();
+        let newText = "";
+
+        for (var i = 0; i < originalText.length; i++) setTimeout(() => element.html(currentText = currentText.slice(0, -1)), (i + 1) * 100);
+        for (var i = 0; i < text.length; i++) setTimeout(() => element.html(newText = text.substr(0, newText.length + 1)), (i * 100) + (originalText.length * 100) + 300);
+
+        setTimeout(() => resolve(), (text.length * 100) + (originalText.length * 100) + 300);
+    });
+}
+
+$(document).ready(async () => {
+    $($(".nav-link")[index]).addClass("active")
+    await changeText("jackthefine.", $("#jackthetext"))
+
+    let extensions =  [ "cs", "php", "css", "html", "js", "py", "json", "cpp", "xyz", "imaurl" ];
+
+    for await (const i of new Array(4)) {
+        let ext = extensions[Math.floor(Math.random() * extensions.length)];
+        extensions = extensions.filter(x => x != ext);
+
+        await changeText(ext, $("#jacktheext"));
+    }
+
+    await changeText("dev", $("#jacktheext"));
+});
+</script></div>
