@@ -1,103 +1,126 @@
-<!DOCTYPE html>
 <html data-bs-theme="dark" lang="en" data-bss-forced-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-  <title>jackthefine</title>
+  <title>jackthefine - Response Editor</title>
   <link rel="icon" type="image/jpeg" sizes="256x256" href="assets/img/d12f8639234ec709bb62060625bb2254.jpeg">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-  <script src="/nav.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
-<body class="bg-dark text-light">
 
-  <div class="container py-5">
-    <h1 class="text-center mb-4">i love coding</h1>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-md" style="background-color: slategray;">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">
+        <img src="assets/img/d12f8639234ec709bb62060625bb2254.jpeg" style="border-radius: .5rem;" height="40px" width="40px">
+        &nbsp;&nbsp;<span style="font-size: large;">jackthefine.dev</span>
+      </a>
+    </div>
+  </nav>
 
-    <div class="card bg-secondary p-3 mb-3">
-      <div class="row g-2">
-        <div class="col-md-5">
-          <input id="keyInput" class="form-control" placeholder="Said thing">
-        </div>
-        <div class="col-md-5">
-          <input id="valueInput" class="form-control" placeholder="Reply thing">
-        </div>
-        <div class="col-md-2 d-grid">
-          <button id="addButton" class="btn btn-success">Add / Update</button>
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">Bot Responses Editor</h2>
+
+    <!-- Add new -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title">Add a new response</h5>
+        <div class="row g-3">
+          <div class="col-md-5">
+            <input id="said" class="form-control" placeholder="User says..." />
+          </div>
+          <div class="col-md-5">
+            <input id="reply" class="form-control" placeholder="Bot replies with..." />
+          </div>
+          <div class="col-md-2">
+            <button class="btn btn-success w-100" id="addBtn">Add</button>
+          </div>
         </div>
       </div>
     </div>
 
-    <table class="table table-dark table-striped align-middle">
-      <thead>
-        <tr>
-          <th>Said</th>
-          <th>Reply</th>
-          <th class="text-end">Actions</th>
-        </tr>
-      </thead>
-      <tbody id="repliesTable"></tbody>
-    </table>
+    <!-- Table -->
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Existing Responses</h5>
+        <table class="table table-dark table-striped align-middle" id="responsesTable">
+          <thead>
+            <tr>
+              <th>"Said Thing"</th>
+              <th>"Reply Thing"</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
   <script>
-    let wordReplies = {};
+    // Load initial data from backend
+    async function loadResponses() {
+      const res = await fetch('/api/responses'); // adjust to your API route
+      const data = await res.json();
 
-    async function loadReplies() {
-      const response = await fetch('/api/responses.json?_=' + Date.now());
-      wordReplies = await response.json();
-      refreshTable();
-    }
+      const tbody = $('#responsesTable tbody');
+      tbody.empty();
 
-    function refreshTable() {
-      const table = $("#repliesTable");
-      table.empty();
-      for (const [key, value] of Object.entries(wordReplies)) {
-        table.append(`
+      Object.entries(data).forEach(([said, reply]) => {
+        const row = $(`
           <tr>
-            <td>${key}</td>
-            <td>${value}</td>
-            <td class="text-end">
-              <button class="btn btn-sm btn-primary me-2" onclick="editReply('${key}')">Edit</button>
-              <button class="btn btn-sm btn-danger" onclick="deleteReply('${key}')">Delete</button>
+            <td><input class="form-control form-control-sm said" value="${said}" disabled></td>
+            <td><input class="form-control form-control-sm reply" value="${reply}"></td>
+            <td>
+              <button class="btn btn-primary btn-sm save">💾</button>
+              <button class="btn btn-danger btn-sm delete">🗑️</button>
             </td>
           </tr>
         `);
-      }
-    }
-
-    function editReply(key) {
-      $("#keyInput").val(key);
-      $("#valueInput").val(wordReplies[key]);
-    }
-
-    function deleteReply(key) {
-      delete wordReplies[key];
-      refreshTable();
-      saveReplies();
-    }
-
-    $("#addButton").on("click", () => {
-      const key = $("#keyInput").val().trim();
-      const value = $("#valueInput").val().trim();
-      if (!key || !value) return alert("Please fill in both fields.");
-
-      wordReplies[key] = value;
-      $("#keyInput").val('');
-      $("#valueInput").val('');
-      refreshTable();
-      saveReplies();
-    });
-
-    async function saveReplies() {
-      await fetch('/save-wordReplies', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(wordReplies)
+        tbody.append(row);
       });
     }
 
-    loadReplies();
+    // Add response
+    $('#addBtn').on('click', async () => {
+      const said = $('#said').val().trim();
+      const reply = $('#reply').val().trim();
+      if (!said || !reply) return alert('Fill both fields');
+
+      await fetch('/api/responses', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ said, reply })
+      });
+      $('#said').val('');
+      $('#reply').val('');
+      loadResponses();
+    });
+
+    // Delegate edit + delete buttons
+    $('#responsesTable').on('click', '.save', async function() {
+      const row = $(this).closest('tr');
+      const said = row.find('.said').val();
+      const reply = row.find('.reply').val();
+
+      await fetch(`/api/responses/${encodeURIComponent(said)}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reply })
+      });
+      loadResponses();
+    });
+
+    $('#responsesTable').on('click', '.delete', async function() {
+      const said = $(this).closest('tr').find('.said').val();
+      if (!confirm(`Delete "${said}"?`)) return;
+      await fetch(`/api/responses/${encodeURIComponent(said)}`, { method: 'DELETE' });
+      loadResponses();
+    });
+
+    // Initial load
+    loadResponses();
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
