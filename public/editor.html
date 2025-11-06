@@ -44,7 +44,7 @@
     let wordReplies = {};
 
     async function loadReplies() {
-      const response = await fetch('/wordReplies.json?_=' + Date.now());
+      const response = await fetch('/responses.json?_=' + Date.now());
       wordReplies = await response.json();
       refreshTable();
     }
