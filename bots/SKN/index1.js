@@ -50,6 +50,7 @@ const wordReplies = {
   "nigger": "oh?",
   "fuck the a": "TWIN U BETTER BE JOKING",
   "idk": "bro talk",
+  "stfu amber": "**amber hate will not be tolerated.**",
   //"ok": "ok"
 };
 
