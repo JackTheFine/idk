@@ -9,7 +9,6 @@
 </head>
 
 <body>
-  <!-- Navbar -->
   <nav class="navbar navbar-expand-md" style="background-color: slategray;">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">
@@ -20,12 +19,11 @@
   </nav>
 
   <div class="container mt-5">
-    <h2 class="text-center mb-4">Bot Responses Editor</h2>
+    <h2 class="text-center mb-4">ok</h2>
 
-    <!-- Add new -->
     <div class="card mb-4">
       <div class="card-body">
-        <h5 class="card-title">Add a new response</h5>
+        <h5 class="card-title">add</h5>
         <div class="row g-3">
           <div class="col-md-5">
             <input id="said" class="form-control" placeholder="User says..." />
@@ -43,7 +41,7 @@
     <!-- Table -->
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title">Existing Responses</h5>
+        <h5 class="card-title">existing</h5>
         <table class="table table-dark table-striped align-middle" id="responsesTable">
           <thead>
             <tr>
@@ -59,9 +57,8 @@
   </div>
 
   <script>
-    // Load initial data from backend
     async function loadResponses() {
-      const res = await fetch('/api/responses'); // adjust to your API route
+      const res = await fetch('/api/responses');
       const data = await res.json();
 
       const tbody = $('#responsesTable tbody');
@@ -82,7 +79,6 @@
       });
     }
 
-    // Add response
     $('#addBtn').on('click', async () => {
       const said = $('#said').val().trim();
       const reply = $('#reply').val().trim();
@@ -98,7 +94,6 @@
       loadResponses();
     });
 
-    // Delegate edit + delete buttons
     $('#responsesTable').on('click', '.save', async function() {
       const row = $(this).closest('tr');
       const said = row.find('.said').val();
@@ -119,7 +114,6 @@
       loadResponses();
     });
 
-    // Initial load
     loadResponses();
   </script>
 
