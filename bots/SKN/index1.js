@@ -1,8 +1,9 @@
-const { Client, Events, GatewayIntentBits, Collection, ActivityType } = require('discord.js');
+const { Client, Events, GatewayIntentBits, Collection, ActivityType, WebhookClient } = require('discord.js');
 const fs = require('node:fs');
-const { token1 } = require('../../config.json');
+const { token1, wh } = require('../../config.json');
 require("./deploy-commands1");
 const path = require('path');
+const webhookClient = new WebhookClient({ url: wh });
 const responsesPath = path.join(__dirname, '../../responses.json');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMembers ]});
