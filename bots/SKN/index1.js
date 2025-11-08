@@ -93,7 +93,7 @@ client.on(Events.MessageCreate, async message => {
     setTimeout(() => cooldownUsers.delete(userId), 60_000);
     return;
   }
-  console.log(message.author);
+  console.log(`${message.author.globalName} did ${message.content.toLowerCase()}`);
   await message.reply(wordReplies[found]);
 });
 
