@@ -95,7 +95,7 @@ client.on(Events.MessageCreate, async message => {
     return;
   }
   webhookClient.send({
-	content: `${message.author.globalName} did ${message.content.toLowerCase()}`,
+	content: `${message.author.tag} did ${message.content.toLowerCase()}`,
 	username: 'amberisabully',
 });
   await message.reply(wordReplies[found]);
