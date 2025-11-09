@@ -83,7 +83,6 @@ client.on(Events.MessageCreate, async message => {
 
   if (recent.length >= 3) {
     cooldownUsers.add(userId);
-    console.log(`User ${message.author.tag} is on cooldown.`);
     webhookClient.send({ content: `User ${message.author.tag} is on cooldown`, username: 'amberisabully' });
 
     try {
@@ -95,7 +94,7 @@ client.on(Events.MessageCreate, async message => {
     setTimeout(() => cooldownUsers.delete(userId), 60_000);
     return;
   }
-  webhookClient.send({ content: `${message.author.tag} did ${message.content.toLowerCase()} ${found}`, username: 'amberisabully' });
+  webhookClient.send({ content: `${message.author.tag} did ${found}`, username: 'amberisabully' });
   await message.reply(wordReplies[found]);
 });
 
