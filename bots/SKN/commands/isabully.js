@@ -15,5 +15,6 @@ module.exports = {
   async execute(interaction, client) {
     const user = interaction.options.getUser('user');
     interaction.channel.send(`${user} is a bully chain :point_down:`)
+    interaction.reply({ ephemeral: true, content: ":3"})
   }
 }
